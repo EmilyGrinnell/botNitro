@@ -22,7 +22,11 @@ module.exports = function(message) {
     if (message.author.id == this.user.id) return;
     //Ignore our own messages
 
-    let args = message.content.substring(message.content.startsWith(this.config._main.prefix) ? this.config._main.prefix.length : config.prefix.length).split(" ");
+    let prefix = message.content.startsWith(this.config._main.prefix) ? this.config._main.prefix : config.prefix;
+    if (message.content.startsWith(this.config._main.prefix) && message.content.startsWith(config.prefix)) prefix = this.config._main.prefix.length > config.prefix.length ? this.config._main.prefix : config.prefix;
+    //Avoid message being incorrectly split if guild's prefix starts with the global prefix
+
+    let args = message.content.substring(prefix.length).split(" ");
     let command = args[0].toLowerCase();
     //Split message into command and arguments
 
