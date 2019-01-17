@@ -1,3 +1,5 @@
+const titleCase = x => `${x[0].toUpperCase()}${x.slice(1)}`;
+
 module.exports = function(message, args) {
     if (!args.length) return message.channel.send(`Usage: \`${this.config.prefix}config <setting> [new value]\` or \`${this.config.prefix}config <setting> <add/remove> <value>\``).catch(() => null);
     //Ensure user is not trying to edit actions
@@ -8,14 +10,14 @@ module.exports = function(message, args) {
 
     if (args[0] == "*")
     {
-        let settings = Object.keys(this.config).getValues(item => {return {name : item, value : this.config[item] instanceof Array ? `[${this.config[item].join(", ")}]` : this.config[item].toString() || "[No value]"}});
+        let settings = Object.keys(this.config).getValues(item => {return {name : item, value : this.config[item] instanceof Array ? `\`Array\`\n[${this.config[item].join(", ")}]` : `\`${titleCase(typeof(this.config[item]))}\`\n${this.config[item].toString()}` || "[No value]"}});
 
         settings.splice(settings.getIndex(item => item.name == "actions"), 1);
         return new this.lib.List(settings, message.channel, message.author.id, this.client);
     }
     //Show all config if user chooses * as the setting to view
 
-    if (args.length == 1) return message.channel.send("", {embed : {fields : [{name : setting, value : this.config[setting] instanceof Array ? `[${this.config[setting].join(", ")}]` : this.config[setting].toString() || "[No value]"}], color : message.guild.me.displayColor}}).catch(() => null);
+    if (args.length == 1) return message.channel.send("", {embed : {fields : [{name : setting, value : this.config[setting] instanceof Array ? `\`Array\`\n[${this.config[setting].join(", ")}]` : `\`${titleCase(typeof(this.config[setting]))}\`\n${this.config[setting].toString()}` || "[No value]"}], color : message.guild.me.displayColor}}).catch(() => null);
     //Send current value of setting
 
     if (this.config[setting] instanceof Array)
