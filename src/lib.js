@@ -108,9 +108,8 @@ function pad(...nums)
 }
 //Pad numbers to 2 digits
 
-function timestamp(date)
+function timestamp(date = new Date())
 {
-    date = date instanceof Date ? date : new Date();
     return `[${pad(date.getHours(), date.getMinutes(), date.getSeconds()).join(":")}]`;
 }
 //Create a timestamp of current date or provided date
