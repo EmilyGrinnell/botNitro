@@ -44,7 +44,6 @@ class botNitro extends Discord.Client
     {
         fs.writeFileSync(`${path.relative("./", __dirname)}/../config/settings.json`, JSON.stringify(this.config, null, 4));
         fs.writeFileSync(`${path.relative("./", __dirname)}/../config/permissions.json`, JSON.stringify(this.permissions, null, 4));
-        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/channels.json`, JSON.stringify(this.liveChannels, null, 4));
         //Save config and permissions to file
     }
 }

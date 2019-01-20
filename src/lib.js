@@ -1,11 +1,11 @@
 const Discord = require("discord.js");
-const deleteMessage = `let x = async function () {
+const deleteMessage = `(async function () {
     let channel = this.channels.get("{channel}");
     if (!channel) return;
     
     let msg = await channel.fetchMessage("{message}").catch(() => null);
     if (msg) msg.delete().catch(() => null);
-}; x;`;
+});`;
 //Function to delete messages
 
 class List
@@ -72,15 +72,6 @@ class List
     }
 }
 
-function copyObject(obj)
-{
-    let newObj = {};
-
-    for (var x = 0; x < Object.keys(obj).length; x ++) newObj[Object.keys(obj)[x]] = Object.values(obj)[x];
-    return newObj;
-}
-//Create a copy of an object
-
 function ignoreDeletion(message)
 {
     this.ignoreDeletion.push(message.id);
@@ -89,15 +80,6 @@ function ignoreDeletion(message)
     if (index != -1) this.scheduler.removeEvent(index);
 }
 //Remove the deletion event for a message
-
-function inheritPerms(parent, child)
-{
-    let newObj = copyObject(parent);
-
-    for (var x = 0; x < Object.keys(child).length; x ++) newObj[Object.keys(child)[x]] = Object.values(child)[x];
-    return newObj;
-}
-//Copy permissions from inherited role
 
 function pad(...nums)
 {
@@ -139,20 +121,6 @@ String.prototype.colour = function(...colours) {
 };
 //Colour strings
 
-Array.prototype.getIndex = function(func) {
-    for (var x = 0; x < this.length; x ++) if (func(this[x])) return x;
-    return -1;
-};
-//Get index of an item based on a function
-
-Array.prototype.getValues = function(func) {
-    let ret = [];
-
-    for (var x = 0; x < this.length; x ++) ret.push(func(this[x]));
-    return ret;
-};
-//Call a function on all values of an array and return the results
-
 Object.defineProperty(Discord.TextChannel.prototype, "talkable", {
     get : function() {
         return this.permissionsFor(this.client.user).has("SEND_MESSAGES");
@@ -161,15 +129,13 @@ Object.defineProperty(Discord.TextChannel.prototype, "talkable", {
 //Add property to text channels to check whether we have permission to send messages in that channel
 
 console.oldLog = console.log;
-console.log = (...msg) => {console.oldLog(timestamp().colour(32), ...msg)};
+console.log = (...msg) => console.oldLog(timestamp().colour(32), ...msg);
 //Add green timestamp to each logged message
 
 module.exports = {
     List,
-    copyObject,
     deleteMessage,
     ignoreDeletion,
-    inheritPerms,
     pad,
     timestamp,
     toggleMute

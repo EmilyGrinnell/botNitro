@@ -33,7 +33,7 @@ module.exports = function(message) {
     if (!fs.existsSync(`${path.relative("./", __dirname)}/../commands/${command}.js`)) return;
     //Ignore commands that don't exist
 
-    let highestRole = message.guild.members.get(message.author.id).roles.array().sort((a, b) => b.position - a.position).filter(item => Object.values(this.handlers[message.guild.id].permissions).getIndex(x => x.roleId == item.id) != -1)[0];
+    let highestRole = message.guild.members.get(message.author.id).roles.array().sort((a, b) => b.position - a.position).filter(item => Object.values(this.handlers[message.guild.id].permissions).findIndex(x => x.roleId == item.id) != -1)[0];
     let perms = (highestRole ? Object.values(this.handlers[message.guild.id].permissions).filter(item => item.roleId == highestRole.id)[0] : this.handlers[message.guild.id].permissions._default).perms;
     //Get permissions for user based on highest Discord role associated with a permissions role
 

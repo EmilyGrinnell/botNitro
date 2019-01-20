@@ -8,8 +8,8 @@ class guildHandler
         this.client = client;
         this.guild = guild;
         this.lib = this.client.lib;
-        this.config = this.client.config[this.guild] = this.client.config[this.guild] || this.lib.copyObject(this.client.config._default);
-        this.permissions = this.client.permissions[this.guild] = this.client.permissions[this.guild] || this.lib.copyObject(this.client.permissions._default);
+        this.config = this.client.config[this.guild] = this.client.config[this.guild] || Object.assign({}, this.client.config._default);
+        this.permissions = this.client.permissions[this.guild] = this.client.permissions[this.guild] || Object.assign({}, this.client.permissions._default);
         this.client.scheduler = this.client.scheduler || new eventScheduler(this.client);
         this.twitchBot = new twitchBot(this.client, this.guild);
         
@@ -22,11 +22,9 @@ class guildHandler
         {
             let role = this.permissions[this.roles[x]];
             role.inherits = role.inherits.filter(item => this.roles.includes(item) && x > this.roles.indexOf(item)).sort((a, b) => this.roles.indexOf(a) - this.roles.indexOf(b));
-            for (var y = 0; y < role.inherits.length; y ++) role.perms = this.lib.inheritPerms(this.permissions[role.inherits.reverse()[y]].perms, role.perms);
+            for (var y = 0; y < role.inherits.length; y ++) role.perms = Object.assign(this.permissions[role.inherits.reverse()[y]].perms, role.perms);
             //Filter inheritances to only roles that exist and are lower than the role inheriting them and evaluate permissions
         }
-
-        this.client.saveConfig();
     }
 }
 

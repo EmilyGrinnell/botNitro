@@ -11,7 +11,7 @@ module.exports = async function(message, args) {
     else message.channel.send(`Successfully muted user in ${successes} ${successes == 1 ? "channel" : "channels"}`).catch(() => null);
     //Try to mute user in any channels we can
 
-    let index = this.client.scheduler.getIndex(item => item.func.toString() == `function () {this.lib.toggleMute(this.guilds.get("${message.guild.id}").channels.array().filter(item => item.type == "text"), this.users.get("${member.user.id}"), null)}`);
+    let index = this.client.scheduler.findIndex(item => item.func.toString() == `function () {this.lib.toggleMute(this.guilds.get("${message.guild.id}").channels.array().filter(item => item.type == "text"), this.users.get("${member.user.id}"), null)}`);
     if (index != -1) this.client.scheduler.removeEvent(index);
     //If the user has been timed out, remove the scheduled event to unmute them
 };

@@ -1,9 +1,9 @@
 module.exports = function(message, args) {
-    if (!args.length || args[0] == "*") return new this.lib.List(this.roles.getValues(item => {return {name : item, value : this.permissions[item].roleId || "[No role ID]"}}), message.channel, message.author.id, this.client);
-    if (!Object.keys(this.permissions).getValues(item => item.toLowerCase()).includes(args[0].toLowerCase()) && !/\d+|<@&\d+>/.test(args[1]) && !["delete", "inherits"].includes(args[0].toLowerCase())) return message.channel.send(`\`${args[0]}\` is not a valid permission role. You can view valid permission roles using \`${this.config.prefix}perms *\` or create a new role using \`${this.config.prefix}perms <permission role> <role ID>\``).catch(() => null);
+    if (!args.length || args[0] == "*") return new this.lib.List(this.roles.map(item => {return {name : item, value : this.permissions[item].roleId || "[No role ID]"}}), message.channel, message.author.id, this.client);
+    if (!Object.keys(this.permissions).map(item => item.toLowerCase()).includes(args[0].toLowerCase()) && !/\d+|<@&\d+>/.test(args[1]) && !["delete", "inherits"].includes(args[0].toLowerCase())) return message.channel.send(`\`${args[0]}\` is not a valid permission role. You can view valid permission roles using \`${this.config.prefix}perms *\` or create a new role using \`${this.config.prefix}perms <permission role> <role ID>\``).catch(() => null);
     //Ensure permission role is valid or user is creating it
 
-    let key = Object.keys(this.permissions)[Object.keys(this.permissions).getIndex(item => item.toLowerCase() == (args[args[0].toLowerCase() == "delete" ? 1 : 0] || "").toLowerCase())];
+    let key = Object.keys(this.permissions)[Object.keys(this.permissions).findIndex(item => item.toLowerCase() == (args[args[0].toLowerCase() == "delete" ? 1 : 0] || "").toLowerCase())];
     //Get index of permission role user is editing
 
     if (/^\d+$|^<@&\d+>$/.test(args[1]))
@@ -12,7 +12,7 @@ module.exports = function(message, args) {
         if (!role) return message.channel.send(`Role not found`).catch(() => null);
         //Check role ID is valid
 
-        this.permissions[key || args[0]] = this.permissions[key || args[0]] || this.lib.copyObject(this.permissions._default);
+        this.permissions[key || args[0]] = this.permissions[key || args[0]] || Object.assign({}, this.permissions._default);
         this.permissions[key || args[0]].roleId = role.id;
         //Copy default permissions if needed and set role ID
 
@@ -69,7 +69,7 @@ module.exports = function(message, args) {
         //Remove inherit
     }
 
-    if (args.length == 1) return new this.lib.List([{name : "Role ID", value : this.permissions[key].roleId}, ...Object.keys(this.permissions[key].perms).getValues(item => {return {name : item, value : this.permissions[key].perms[item].toString()}})], message.channel, message.author.id, this.client);
+    if (args.length == 1) return new this.lib.List([{name : "Role ID", value : this.permissions[key].roleId}, ...Object.keys(this.permissions[key].perms).map(item => {return {name : item, value : this.permissions[key].perms[item].toString()}})], message.channel, message.author.id, this.client);
     //Show a list of all permissions for given role
 
     let perm = Object.keys(this.permissions[key]).filter(item => item.toLowerCase() == args[1].toLowerCase())[0];

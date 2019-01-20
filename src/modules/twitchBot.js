@@ -1,4 +1,6 @@
 const request = require("request");
+const fs = require("fs");
+const path = require("path");
 
 class twitchBot
 {
@@ -23,7 +25,7 @@ class twitchBot
             if (!this.channels.includes(this.liveChannels[x]))
             {
                 this.liveChannels.splice(x, 1);
-                this.client.saveConfig();
+                this.saveChannels();
             }
         }
         //Remove channels no longer in config from live channel list
@@ -40,7 +42,7 @@ class twitchBot
                     "Client-ID" : this.client.config._main.twitchClientId
                 }
             }, async (err, res, body) => {
-                body = JSON.parse(body);
+                if (body) body = JSON.parse(body);
 
                 if (!err && body.stream)
                 {
@@ -49,8 +51,8 @@ class twitchBot
                     //Also do nothing if the notification channel for the guild cannot be found or we can't send messages in it
 
                     this.liveChannels.push(this.channels[index]);
-                    this.client.saveConfig();
-                    //Add channel to list of live channels and save config
+                    this.saveChannels();
+                    //Add channel to list of live channels and save live channels to file
 
                     let thumbnail = body.stream.preview.medium;
                     if (user)
@@ -63,7 +65,7 @@ class twitchBot
                     channel.send(this.client.config[this.guild].notificationMessage.replace(/{channel}/gi, body.stream.channel.display_name), {embed : {
                         author : {name : body.stream.channel.display_name, icon_url : body.stream.channel.logo, url : body.stream.channel.url},
                         color : channel.guild.me.displayColor,
-                        fields : [{name : "Playing", value : body.stream.game || "[No game specified]"}],
+                        fields : [{name : body.stream.game ? "Playing" : "Streaming", value : body.stream.channel.game || "[No game specified]"}],
                         footer : {text : channel.guild.me.displayName, icon_url : this.client.user.avatarURL},
                         image : {url : thumbnail},
                         timestamp : body.stream.created_at,
@@ -77,14 +79,20 @@ class twitchBot
                 else if (!err && this.liveChannels.includes(this.channels[index]))
                 {
                     this.liveChannels.splice(this.liveChannels.indexOf(this.channels[index]), 1);
-                    this.client.saveConfig();
-                    //Remove channel from list of live channels and save config
+                    this.saveChannels();
+                    //Remove channel from list of live channels and save live channels to file
                 }
             });
         }
 
         setTimeout(() => {this.checkLiveChannels()}, 60000);
         //Check live channels again after 1 minute
+    }
+
+    saveChannels()
+    {
+        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/channels.json`, JSON.stringify(this.client.liveChannels, null, 4));
+        //Save live channels to file
     }
 }
 

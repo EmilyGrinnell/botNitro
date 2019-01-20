@@ -10,7 +10,7 @@ module.exports = function(message, args) {
 
     if (args[0] == "*")
     {
-        let settings = Object.keys(this.config).getValues(item => {return {name : item, value : this.config[item] instanceof Array ? `\`Array\`\n[${this.config[item].join(", ")}]` : `\`${titleCase(typeof(this.config[item]))}\`\n${this.config[item].toString()}` || "[No value]"}});
+        let settings = Object.keys(this.config).map(item => {return {name : item, value : this.config[item] instanceof Array ? `\`Array\`\n[${this.config[item].join(", ")}]` : `\`${titleCase(typeof(this.config[item]))}\`\n${this.config[item].toString()}` || "[No value]"}});
 
         settings.splice(settings.getIndex(item => item.name == "actions"), 1);
         return new this.lib.List(settings, message.channel, message.author.id, this.client);
@@ -25,7 +25,7 @@ module.exports = function(message, args) {
         if (args.length == 2 || !["add", "remove"].includes(args[1].toLowerCase())) return message.channel.send(`Usage: \`${this.config.prefix}config <setting> <add/remove> <value>\``);
         if (args[1].toLowerCase() == "add")
         {
-            if (this.config[setting].getValues(item => item.toLowerCase()).includes(args.slice(2).join(" ").toLowerCase())) return message.channel.send(`\`${args.slice(2).join(" ")}\` is already in that array`).catch(() => null);
+            if (this.config[setting].map(item => item.toLowerCase()).includes(args.slice(2).join(" ").toLowerCase())) return message.channel.send(`\`${args.slice(2).join(" ")}\` is already in that array`).catch(() => null);
             //Check value isn't already in array
 
             this.config[setting].push(args.slice(2).join(" "));
@@ -34,10 +34,10 @@ module.exports = function(message, args) {
             //Add value to array
         }
         
-        if (!this.config[setting].getValues(item => item.toLowerCase()).includes(args.slice(2).join(" ").toLowerCase())) return message.channel.send(`\`${args.slice(2).join(" ")}\` is not in that array`).catch(() => null);
+        if (!this.config[setting].map(item => item.toLowerCase()).includes(args.slice(2).join(" ").toLowerCase())) return message.channel.send(`\`${args.slice(2).join(" ")}\` is not in that array`).catch(() => null);
         //Ensure value is in array
 
-        this.config[setting].splice(this.config[setting].getValues(item => item.toLowerCase()).indexOf(args.slice(2).join(" ")), 1);
+        this.config[setting].splice(this.config[setting].map(item => item.toLowerCase()).indexOf(args.slice(2).join(" ")), 1);
         this.client.saveConfig();
         return message.channel.send(`Removed \`${args.slice(2).join(" ")}\` from array`).catch(() => null);
         //Remove value from array

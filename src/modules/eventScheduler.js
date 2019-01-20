@@ -22,7 +22,7 @@ class eventScheduler extends Array
         this.timeouts.push(setTimeout(() => {
             func.apply(eval(thisVal));
 
-            this.removeEvent(this.getIndex(item => item.date == date && item.func == func && item.thisVal == thisVal));
+            this.removeEvent(this.findIndex(item => item.date == date && item.func == func && item.thisVal == thisVal));
         }, date - Date.now()));
         //Set timeout for event and save it to file
     }
