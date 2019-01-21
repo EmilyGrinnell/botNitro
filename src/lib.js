@@ -75,7 +75,7 @@ class List
 function ignoreDeletion(message)
 {
     this.ignoreDeletion.push(message.id);
-    let index = this.scheduler.getIndex(item => item.func.toString() == eval(deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)).toString());
+    let index = this.scheduler.findIndex(item => item.func.toString() == eval(deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)).toString());
     
     if (index != -1) this.scheduler.removeEvent(index);
 }

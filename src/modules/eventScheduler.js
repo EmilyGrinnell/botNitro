@@ -10,7 +10,7 @@ class eventScheduler extends Array
         this.timeouts = [];
 
         let events = fs.existsSync(`${path.relative("./", __dirname)}/../config/events.json`) ? require("../config/events.json") : [];
-        for (var x = 0; x < events.length; x ++) this.addEvent(events[x].date, eval(`let x = ${events[x].func}; x`), events[x].thisVal);
+        for (var x = 0; x < events.length; x ++) this.addEvent(events[x].date, eval(`(${events[x].func})`), events[x].thisVal);
         //Load saved events
     }
 
