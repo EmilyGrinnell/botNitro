@@ -12,7 +12,7 @@ module.exports = function(message, args) {
     {
         let settings = Object.keys(this.config).map(item => {return {name : item, value : this.config[item] instanceof Array ? `\`Array\`\n[${this.config[item].join(", ")}]` : `\`${titleCase(typeof(this.config[item]))}\`\n${this.config[item].toString()}` || "[No value]"}});
 
-        settings.splice(settings.getIndex(item => item.name == "actions"), 1);
+        settings.splice(settings.findIndex(item => item.name == "actions"), 1);
         return new this.lib.List(settings, message.channel, message.author.id, this.client);
     }
     //Show all config if user chooses * as the setting to view
