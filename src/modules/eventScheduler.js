@@ -38,8 +38,7 @@ class eventScheduler extends Array
 
     removeEvent(index)
     {
-        clearTimeout(this.timeouts[index]);
-        this.timeouts.splice(index, 1);
+        clearTimeout(this.timeouts.splice(index, 1)[0]);
         //Clear timeout
 
         for (; index < this.length - 1; index ++) this[index] = this[index + 1];
