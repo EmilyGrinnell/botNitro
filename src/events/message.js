@@ -9,8 +9,8 @@ module.exports = function(message) {
     let commandChannels = config.commandChannels.filter(item => this.channels.has(item));
     //Use guild's config or default config if none is defined, and filter command channels to only channels that exist
 
-    if (message.author.id == this.user.id && config.deleteMessageTimer > -1 && !this.ignoreDeletion.includes(message.id)) this.scheduler.addEvent(Date.now() + config.deleteMessageTimer * 1000, eval(this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)), "this.client");
-    if (this.ignoreDeletion.includes(message.id)) this.ignoreDeletion.splice(this.ignoreDeletion.indexOf(message.id), 1);
+    if (message.author.id == this.user.id && config.deleteMessageTimer > -1 && !this.ignoredMessages.includes(message.id)) this.scheduler.addEvent(Date.now() + config.deleteMessageTimer * 1000, eval(this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)), "this.client");
+    if (this.ignoredMessages.includes(message.id)) this.ignoredMessages.splice(this.ignoredMessages.indexOf(message.id), 1);
     //Auto delete our own messages if enabled
 
     if (commandChannels.length && !commandChannels.includes(message.channel.id)) return;

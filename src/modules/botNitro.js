@@ -14,7 +14,7 @@ class botNitro extends Discord.Client
         this.liveChannels = fs.existsSync(`${path.relative("./", __dirname)}/../config/channels.json`) ? require("../config/channels.json") : {};
         this.statuses = fs.existsSync(`${path.relative("./", __dirname)}/../config/statuses.json`) ? require("../config/statuses.json") : [];
         this.handlers = {};
-        this.ignoreDeletion = [];
+        this.ignoredMessages = [];
 
         this.oldEmit = this.emit;
         this.emit = function(...args) {
@@ -38,6 +38,15 @@ class botNitro extends Discord.Client
             else process.exit();
         });
         //If token is invalid, quit and don't restart, otherwise restart and try again
+    }
+
+    ignoreDeletion(message)
+    {
+        this.ignoredMessages.push(message.id);
+        let index = this.scheduler.findIndex(item => item.func.toString() == this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id).slice(1, -2));
+        
+        if (index != -1) this.scheduler.removeEvent(index);
+        //Remove the deletion event for a message
     }
 
     saveConfig()

@@ -72,7 +72,7 @@ class twitchBot
                         title : body.stream.channel.status,
                         url : body.stream.channel.url
                     }})
-                    .then(msg => this.client.lib.ignoreDeletion.apply(this.client, [msg]))
+                    .then(msg => this.client.ignoreDeletion(msg))
                     .catch(() => null);
                     //Send notification as a rich embed
                 }

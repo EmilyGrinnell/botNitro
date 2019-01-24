@@ -59,7 +59,7 @@ class List
             fields : [...this.pages[page], {name : `Page ${page + 1}/${this.pages.length}`, value : "Type `prev`, `next`, or `page <page number>` to view another page, or `done` to stop viewing this list"}]
         }}).catch(() => null);
 
-        if (this.lastEmbed) this.client.lib.ignoreDeletion.apply(this.client, [this.lastEmbed]);
+        if (this.lastEmbed) this.client.ignoreDeletion(this.lastEmbed);
         //Delete any previous embed and send a new one
     }
 
@@ -71,15 +71,6 @@ class List
         //Change page
     }
 }
-
-function ignoreDeletion(message)
-{
-    this.ignoreDeletion.push(message.id);
-    let index = this.scheduler.findIndex(item => item.func.toString() == eval(deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)).toString());
-    
-    if (index != -1) this.scheduler.removeEvent(index);
-}
-//Remove the deletion event for a message
 
 function pad(...nums)
 {
@@ -135,7 +126,6 @@ console.log = (...msg) => console.oldLog(timestamp().colour(32), ...msg);
 module.exports = {
     List,
     deleteMessage,
-    ignoreDeletion,
     pad,
     timestamp,
     toggleMute
