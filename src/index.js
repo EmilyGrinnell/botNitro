@@ -5,7 +5,12 @@ const timeouts = [];
 
 function start()
 {
-    const main = childProcess.fork(`${path.relative("./", __dirname)}/bot.js`);
+    const main = childProcess.fork(`${path.relative("./", __dirname)}/bot.js`, [], {stdio : [0, 1, 2, "ipc"]});
+    let quit = false;
+
+    main.on("message", message => {
+        if (message == "QUIT") quit = true;
+    });
 
     main.on("exit", code => {
         switch (code)
@@ -24,7 +29,7 @@ function start()
             case 200:
                 break;
             default:
-                start();
+                if (!quit) start();
         }
     });
 }

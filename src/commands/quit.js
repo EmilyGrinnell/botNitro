@@ -1,4 +1,5 @@
 module.exports = function(message, args) {
+    process.send("QUIT");
     this.client.destroy().then(() => process.exit(200));
 };
 

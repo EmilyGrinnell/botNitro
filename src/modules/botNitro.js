@@ -34,7 +34,11 @@ class botNitro extends Discord.Client
         
         this.login(this.config._main.token).catch(e => {
             console.log("Error logging in:".colour(35), e.message.colour(31));
-            if (e.message == "Incorrect login details were provided.") process.exit(200);
+            if (e.message == "An invalid token was provided.")
+            {
+                process.send("QUIT");
+                process.exit(200);
+            }
             else process.exit();
         });
         //If token is invalid, quit and don't restart, otherwise restart and try again
