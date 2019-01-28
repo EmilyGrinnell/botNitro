@@ -4,7 +4,7 @@ module.exports = async function(message, args) {
     args = args.filter(item => !/^\d+[hms]$/i.test(item));
     //Filter arguments to time and user
 
-    for (var x = 0; x < timeArgs.length; x ++) time += ({h : 3600, m : 60, s : 1}[timeArgs[x].slice(-1)]) * parseInt(timeArgs[x]);
+    for (let x = 0; x < timeArgs.length; x ++) time += ({h : 3600, m : 60, s : 1}[timeArgs[x].slice(-1)]) * parseInt(timeArgs[x]);
     //Convert time to seconds
 
     if (!args.length || !timeArgs.length) return message.channel.send(`Usage: \`${this.config.prefix}timeout <xh ym zs> <username, nickname, ID or mention>\``).catch(() => null);

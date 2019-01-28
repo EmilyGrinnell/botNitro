@@ -5,7 +5,7 @@ module.exports = function() {
     console.log("Connected to Discord".colour(35));
     this.statusChanger = new statusChanger(this);
 
-    for (var x = 0; x < this.guilds.size; x ++)
+    for (let x = 0; x < this.guilds.size; x ++)
     {
         let guild = this.guilds.array()[x];
 

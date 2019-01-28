@@ -12,7 +12,7 @@ module.exports = function(member) {
     }
     //Send leave message if one is defined
 
-    for (var x = 0; x < config.actions.leave.length; x ++)
+    for (let x = 0; x < config.actions.leave.length; x ++)
     {
         let action = config.actions.leave[x];
 

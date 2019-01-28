@@ -12,7 +12,7 @@ module.exports = function(member) {
     }
     //Send join message if one is defined
 
-    for (var x = 0; x < config.actions.join.length; x ++)
+    for (let x = 0; x < config.actions.join.length; x ++)
     {
         let action = config.actions.join[x];
 

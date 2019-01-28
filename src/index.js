@@ -36,7 +36,7 @@ function start()
 
 try
 {
-    for (var x = 0; x < dependencies.length; x ++) require(dependencies[x]);
+    for (let x = 0; x < dependencies.length; x ++) require(dependencies[x]);
     start();
 }
 catch (e)

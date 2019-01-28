@@ -18,7 +18,7 @@ class List
         this.client = client;
         this.pages = [];
 
-        for (var x = 0; x < this.fields.length / 24; x ++) this.pages.push(this.fields.slice(x * 24, (x + 1) * 24));
+        for (let x = 0; x < this.fields.length / 24; x ++) this.pages.push(this.fields.slice(x * 24, (x + 1) * 24));
         this.page = 0;
         //Split fields into pages of 24 items each
     }
@@ -76,7 +76,7 @@ function pad(...nums)
 {
     let ret = [];
 
-    for (var x = 0; x < nums.length; x ++) ret.push(nums[x] > 9 ? nums[x] : `0${nums[x]}`);
+    for (let x = 0; x < nums.length; x ++) ret.push(nums[x] > 9 ? nums[x] : `0${nums[x]}`);
     return ret.length == 1 ? ret[0] : ret;
 }
 //Pad numbers to 2 digits
@@ -93,7 +93,7 @@ function toggleMute(channels, user, val = false)
         let tried = 0;
         let successful = 0;
 
-        for (var x = 0; x < channels.length; x ++)
+        for (let x = 0; x < channels.length; x ++)
         {
             channels[x].overwritePermissions(user, {SEND_MESSAGES : val})
                 .catch(() => successful --)

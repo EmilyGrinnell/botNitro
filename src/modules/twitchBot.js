@@ -20,7 +20,7 @@ class twitchBot
         let channel = this.client.channels.get(this.client.config[this.guild].notificationChannel);
         let user = this.client.users.get(this.client.config._main.notificationUser);
 
-        for (var x = 0; x < this.liveChannels.length; x ++)
+        for (let x = 0; x < this.liveChannels.length; x ++)
         {
             if (!this.channels.includes(this.liveChannels[x]))
             {
@@ -30,7 +30,7 @@ class twitchBot
         }
         //Remove channels no longer in config from live channel list
 
-        for (var x = 0; x < this.channels.length; x ++)
+        for (let x = 0; x < this.channels.length; x ++)
         {
             let index = x;
 

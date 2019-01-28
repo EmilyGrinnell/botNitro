@@ -27,7 +27,7 @@ class statusChanger
         let status = this.client.statuses[this.status];
         let text = status[0];
 
-        for (var x = 0; x < Object.keys(status[2]).length; x ++) text = text.replace(new RegExp(`{${Object.keys(status[2])[x]}}`, "g"), evalInContext.apply(this.client, [Object.values(status[2])[x]]));
+        for (let x = 0; x < Object.keys(status[2]).length; x ++) text = text.replace(new RegExp(`{${Object.keys(status[2])[x]}}`, "g"), evalInContext.apply(this.client, [Object.values(status[2])[x]]));
         this.client.user.setActivity(`${text} || ${this.client.config._main.prefix}help`, {type : status[1]}).catch(() => null);
         //Set status to a randomly selected one
 
