@@ -41,7 +41,7 @@ class eventScheduler extends Array
         clearTimeout(this.timeouts.splice(index, 1)[0]);
         //Clear timeout
 
-        for (; index < this.length - 1; index ++) this[index] = this[index + 1];
+        while (index < this.length - 1) this[index] = this[++ index];
         //Shift all elements back 1
         
         this.length --;
