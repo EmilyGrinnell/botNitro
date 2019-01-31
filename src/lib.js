@@ -1,11 +1,4 @@
 const Discord = require("discord.js");
-const deleteMessage = `(async function () {
-    let channel = this.channels.get("{channel}");
-    if (!channel) return;
-    
-    let msg = await channel.fetchMessage("{message}").catch(() => null);
-    if (msg) msg.delete().catch(() => null);
-});`;
 //Function to delete messages
 
 class List
@@ -125,7 +118,6 @@ console.log = (...msg) => console.oldLog(timestamp().colour(32), ...msg);
 
 module.exports = {
     List,
-    deleteMessage,
     pad,
     timestamp,
     toggleMute

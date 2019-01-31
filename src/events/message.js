@@ -9,7 +9,7 @@ module.exports = function(message) {
     let commandChannels = config.commandChannels.filter(item => this.channels.has(item));
     //Use guild's config or default config if none is defined, and filter command channels to only channels that exist
 
-    if (message.author.id == this.user.id && config.deleteMessageTimer > -1 && !this.ignoredMessages.includes(message.id)) this.scheduler.addEvent(Date.now() + config.deleteMessageTimer * 1000, eval(this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)), "this.client");
+    if (message.author.id == this.user.id && config.deleteMessageTimer > -1 && !this.ignoredMessages.includes(message.id)) this.scheduler.addEvent(Date.now() + config.deleteMessageTimer * 1000, eval(`(function() {this.deleteMessage("${message.channel.id}", "${message.id}")})`), "this.client");
     if (this.ignoredMessages.includes(message.id)) this.ignoredMessages.splice(this.ignoredMessages.indexOf(message.id), 1);
     //Auto delete our own messages if enabled
 
@@ -45,6 +45,6 @@ module.exports = function(message) {
     else message.channel.send("You do not have permission to use that command").catch(() => null);
     //Run command if user has permission to use it
 
-    if (config.deleteCommandTimer > -1) this.scheduler.addEvent(Date.now() + config.deleteCommandTimer * 1000, eval(this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id)), "this.client");
+    if (config.deleteCommandTimer > -1) this.scheduler.addEvent(Date.now() + config.deleteCommandTimer * 1000, eval(`(function() {this.deleteMessage("${message.channel.id}", "${message.id}")})`), "this.client");
     //Auto delete commands if enabled
 };

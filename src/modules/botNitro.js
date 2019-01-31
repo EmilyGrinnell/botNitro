@@ -44,10 +44,19 @@ class botNitro extends Discord.Client
         //If token is invalid, quit and don't restart, otherwise restart and try again
     }
 
+    async deleteMessage(channel, message)
+    {
+        channel = this.channels.get(channel);
+        if (!channel) return;
+
+        message = await channel.fetchMessage(message).catch(() => null);
+        if (message) message.delete().catch(() => null);
+    }
+
     ignoreDeletion(message)
     {
         this.ignoredMessages.push(message.id);
-        let index = this.scheduler.findIndex(item => item.func.toString() == this.lib.deleteMessage.replace("{channel}", message.channel.id).replace("{message}", message.id).slice(1, -2));
+        let index = this.scheduler.findIndex(item => item.func.toString() == `function () {this.deleteMessage("${message.channel.id}", "${message.id}")}`);
         
         if (index != -1) this.scheduler.removeEvent(index);
         //Remove the deletion event for a message
