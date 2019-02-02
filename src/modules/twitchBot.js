@@ -91,7 +91,7 @@ class twitchBot
 
     saveChannels()
     {
-        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/channels.json`, JSON.stringify(this.client.liveChannels, null, 4));
+        fs.writeFileSync(path.resolve(__dirname, "../config/channels.json"), JSON.stringify(this.client.liveChannels, null, 4));
         //Save live channels to file
     }
 }

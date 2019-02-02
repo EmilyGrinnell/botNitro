@@ -5,7 +5,7 @@ const timeouts = [];
 
 function start()
 {
-    const main = childProcess.fork(`${path.relative("./", __dirname)}/bot.js`, [], {stdio : [0, 1, 2, "ipc"]});
+    const main = childProcess.fork(path.resolve(__dirname, "./bot.js"), [], {stdio : [0, 1, 2, "ipc"]});
     let quit = false;
 
     main.on("message", message => {

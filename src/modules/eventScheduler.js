@@ -9,7 +9,7 @@ class eventScheduler extends Array
         this.client = client;
         this.timeouts = [];
 
-        let events = fs.existsSync(`${path.relative("./", __dirname)}/../config/events.json`) ? require("../config/events.json") : [];
+        let events = fs.existsSync(path.resolve(__dirname, "../config/events.json")) ? require("../config/events.json") : [];
         for (let x = 0; x < events.length; x ++) this.addEvent(events[x].date, eval(`(${events[x].func})`), events[x].thisVal);
         //Load saved events
     }
@@ -32,7 +32,7 @@ class eventScheduler extends Array
         let events = [];
         
         for (let x = 0; x < this.length; x ++) events.push({date : this[x].date, func : this[x].func.toString(), thisVal : this[x].thisVal});
-        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/events.json`, JSON.stringify(events, null, 4));
+        fs.writeFileSync(path.resolve(__dirname, "../config/events.json"), JSON.stringify(events, null, 4));
         //Save events to file
     }
 

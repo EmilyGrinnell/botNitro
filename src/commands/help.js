@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = function(message, args) {
-    let available = fs.readdirSync(`${path.relative("./", __dirname)}/`).map(item => item.split(".").slice(0, -1).join("."));
+    let available = fs.readdirSync(path.resolve(__dirname, "./")).map(item => item.split(".").slice(0, -1).join("."));
     let commands = ((!args.length || args.includes("*")) ? available : args.filter(item => available.includes(item.toLowerCase()))).map(item => {return {name : item, value : `\`${this.config.prefix}${item} ${require(`./${item}.js`).desc.join("`\n")}`}});
     //Get valid commands and filter arguments to only valid commands or all commands if no commands are given
 

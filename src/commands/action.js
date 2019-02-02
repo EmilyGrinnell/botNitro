@@ -27,7 +27,7 @@ module.exports = function(message, args) {
     {
         case "add":
             args[2] = args[2] || "";
-            if (!fs.readdirSync(`${path.relative("./", __dirname)}/../actions/`).map(item => item.split(".").slice(0, -1).join(".")).includes(args[2].toLowerCase())) return message.channel.send(`That's not a valid action. You can see a full list of actions by using \`${this.config.prefix}action help\``).catch(() => null);
+            if (!fs.readdirSync(path.resolve(__dirname, "../actions/")).map(item => item.split(".").slice(0, -1).join(".")).includes(args[2].toLowerCase())) return message.channel.send(`That's not a valid action. You can see a full list of actions by using \`${this.config.prefix}action help\``).catch(() => null);
             //Ensure action is valid
 
             this.config.actions[args[1].toLowerCase()].push([args[2].toLowerCase(), args.slice(3).join(" ")]);
@@ -63,7 +63,7 @@ module.exports = function(message, args) {
             else return new this.lib.List(this.config.actions[args[1].toLowerCase()].map(item => {return {name : item[0], value : item[1].length > 1024 ? `${item[1].substring(0, 1021)}...` : item[1]}}), message.channel, message.author.id, this.client);
             //Send defined actions as a list
         case "help":
-            return new this.lib.List(fs.readdirSync(`${path.relative("./", __dirname)}/../actions/`).map(item => item.split(".").slice(0, -1).join(".")).map(item => {return {name : item, value : `\`${require(`../actions/${item}.js`).desc.join("`\n")}`}}), message.channel, message.author.id, this.client);
+            return new this.lib.List(fs.readdirSync(path.resolve(__dirname, "../actions/")).map(item => item.split(".").slice(0, -1).join(".")).map(item => {return {name : item, value : `\`${require(`../actions/${item}.js`).desc.join("`\n")}`}}), message.channel, message.author.id, this.client);
             //Send available actions with descriptions of each as a list
         default:
             message.channel.send(`Usage: \`${this.config.prefix}action ${module.exports.desc[0]}\``).catch(() => null);

@@ -30,7 +30,7 @@ module.exports = function(message) {
     let command = args[0].toLowerCase();
     //Split message into command and arguments
 
-    if (!fs.existsSync(`${path.relative("./", __dirname)}/../commands/${command}.js`)) return;
+    if (!fs.existsSync(path.resolve(__dirname, `../commands/${command}.js`))) return;
     //Ignore commands that don't exist
 
     let highestRole = message.guild.members.get(message.author.id).roles.array().sort((a, b) => b.position - a.position).filter(item => Object.values(this.handlers[message.guild.id].permissions).findIndex(x => x.roleId == item.id) != -1)[0];

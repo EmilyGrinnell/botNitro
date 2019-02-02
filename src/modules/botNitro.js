@@ -11,21 +11,21 @@ class botNitro extends Discord.Client
         this.lib = require("../lib.js");
         this.config = require("../config/settings.json");
         this.permissions = require("../config/permissions.json");
-        this.liveChannels = fs.existsSync(`${path.relative("./", __dirname)}/../config/channels.json`) ? require("../config/channels.json") : {};
-        this.statuses = fs.existsSync(`${path.relative("./", __dirname)}/../config/statuses.json`) ? require("../config/statuses.json") : [];
+        this.liveChannels = fs.existsSync(path.resolve(__dirname, "../config/channels.json")) ? require("../config/channels.json") : {};
+        this.statuses = fs.existsSync(path.resolve(__dirname, "../config/statuses.json")) ? require("../config/statuses.json") : [];
         this.handlers = {};
         this.ignoredMessages = [];
 
         this.oldEmit = this.emit;
-        this.emit = function(...args) {
-            if (fs.existsSync(`${path.relative("./", __dirname)}/../events/${args[0]}.js`))
+        this.emit = function(event, ...args) {
+            if (fs.existsSync(path.resolve(__dirname, `../events/${event}.js`)))
             {
-                delete require.cache[require.resolve(`../events/${args[0]}.js`)];
-                require(`../events/${args[0]}.js`).apply(this, args.slice(1));
+                delete require.cache[require.resolve(`../events/${event}.js`)];
+                require(`../events/${event}.js`).apply(this, args);
                 //Reload event every time it's run
             }
 
-            this.oldEmit.apply(this, args);
+            this.oldEmit.apply(this, [event, ...args]);
             //Run any other event listeners for the event
         };
         //For every event emitted, check if a file exists for that event, and if one does, call it
@@ -64,8 +64,8 @@ class botNitro extends Discord.Client
 
     saveConfig()
     {
-        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/settings.json`, JSON.stringify(this.config, null, 4));
-        fs.writeFileSync(`${path.relative("./", __dirname)}/../config/permissions.json`, JSON.stringify(this.permissions, null, 4));
+        fs.writeFileSync(path.resolve(__dirname, "../config/settings.json"), JSON.stringify(this.config, null, 4));
+        fs.writeFileSync(path.resolve(__dirname, "../config/permissions.json"), JSON.stringify(this.permissions, null, 4));
         //Save config and permissions to file
     }
 }

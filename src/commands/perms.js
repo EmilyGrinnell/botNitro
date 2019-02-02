@@ -69,10 +69,10 @@ module.exports = function(message, args) {
         //Remove inherit
     }
 
-    if (args.length == 1) return new this.lib.List([{name : "Role ID", value : this.permissions[key].roleId}, ...Object.keys(this.permissions[key].perms).map(item => {return {name : item, value : this.permissions[key].perms[item].toString()}})], message.channel, message.author.id, this.client);
+    if (args.length == 1) return new this.lib.List([{name : "Role ID", value : this.permissions[key].roleId || "[No role ID]"}, ...Object.keys(this.permissions[key].perms).map(item => {return {name : item, value : this.permissions[key].perms[item].toString()}})], message.channel, message.author.id, this.client);
     //Show a list of all permissions for given role
 
-    let perm = Object.keys(this.permissions[key]).filter(item => item.toLowerCase() == args[1].toLowerCase())[0];
+    let perm = Object.keys(this.permissions[key].perms).find(item => item.toLowerCase() == args[1].toLowerCase());
     //Get permission name
 
     if (!perm) return message.channel.send(`\`${args[1]}\` is not a valid permission. You can view valid permissions using \`${this.config.prefix}perms ${key}\``).catch(() => null);
