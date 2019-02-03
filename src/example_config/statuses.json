@@ -1,0 +1,9 @@
+[
+    ["example status 1", 3, {}],
+    ["example status {test} 2", 2, {
+        "test" : "this.user.username"
+    }],
+    ["example status {x} 3", 0, {
+        "x" : "5 //this code is run in the context of the client and {x} is replaced by the result"
+    }]
+]

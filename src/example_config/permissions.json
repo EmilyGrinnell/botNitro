@@ -1,0 +1,24 @@
+{
+    "_default": {
+        "_default": {
+            "inherits": [],
+            "perms": {
+                "action": false,
+                "ban": false,
+                "config": false,
+                "help": true,
+                "kick": false,
+                "mute": false,
+                "perms": false,
+                "ping": true,
+                "quit": false,
+                "remind": true,
+                "restart": false,
+                "role": false,
+                "timeout": false,
+                "unmute": false
+            },
+            "roleId": ""
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "_main": {
+        "notificationUser": "[ID OF USER FOR TWITCH NOTIFICATION THUMBNAILS TO BE SENT TO]",
+        "ownerId": "[ID OF BOT OWNER]",
+        "prefix": "n!",
+        "token": "[TOKEN OF DISCORD BOT]",
+        "twitchClientId": "[TWITCH CLIENT ID]"
+    },
+    "_default": {
+        "actions": {
+            "join": [],
+            "leave": []
+        },
+        "adminIds": [],
+        "commandChannels": [],
+        "deleteCommandTimer": -1,
+        "deleteMessageTimer": -1,
+        "joinMessage": "Hey {user}! Welcome to {guild}!",
+        "joinMessageChannel": "",
+        "leaveMessage": "{user} left {guild}. Goodbye!",
+        "leaveMessageChannel": "",
+        "notificationChannel": "",
+        "notificationMessage": "Hey everyone! {channel} is live on Twitch!",
+        "prefix": "!",
+        "twitchChannels": []
+    }
+}
