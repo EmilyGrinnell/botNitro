@@ -7,10 +7,10 @@ function start(code)
 {
     if (code == 1) setTimeout(() => errors --, 120000);
 
-    childProcess.fork(path.resolve(__dirname, "./bot.js"), [], {stdio : [0, 1, 2, "ipc"]})
-        .on("message", message => {if (message == "QUIT") process.exit()})
+    childProcess.fork(path.resolve(__dirname, "./bot.js"))
         .on("exit", code => {
-            if (code != 1 || ++ errors < 25) return start(code);
+            if (code == 200) process.exit();
+            else if (code != 1 || ++ errors < 25) return start(code);
 
             console.log("\x1b[1m\x1b[31mToo many errors occurred in a short time, not restarting\x1b[0m");
             process.exit();
