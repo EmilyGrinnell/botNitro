@@ -1,37 +1,20 @@
 const childProcess = require("child_process");
 const path = require("path");
 const dependencies = Object.keys(require("../package.json").dependencies);
-const timeouts = [];
+let errors = 0;
 
-function start()
+function start(code)
 {
-    const main = childProcess.fork(path.resolve(__dirname, "./bot.js"), [], {stdio : [0, 1, 2, "ipc"]});
-    let quit = false;
+    if (code == 1) setTimeout(() => errors --, 120000);
 
-    main.on("message", message => {
-        if (message == "QUIT") quit = true;
-    });
+    childProcess.fork(path.resolve(__dirname, "./bot.js"), [], {stdio : [0, 1, 2, "ipc"]})
+        .on("message", message => {if (message == "QUIT") process.exit()})
+        .on("exit", code => {
+            if (code != 1 || ++ errors < 25) return start(code);
 
-    main.on("exit", code => {
-        switch (code)
-        {
-            case 1:
-                if (timeouts.length < 100)
-                {
-                    timeouts.push(setTimeout(() => {timeouts.splice(0, 1)}, 120000));
-                    return start();
-                }
-                else
-                {
-                    console.log("\x1b[1m\x1b[35mToo many errors occurred in a short time, not restarting\x1b[0m");
-                    process.exit();
-                }
-            case 200:
-                break;
-            default:
-                if (!quit) start();
-        }
-    });
+            console.log("\x1b[1m\x1b[31mToo many errors occurred in a short time, not restarting\x1b[0m");
+            process.exit();
+        });
 }
 
 try
@@ -44,11 +27,9 @@ catch (e)
     console.log("\x1b[1m\x1b[31mMissing required dependencies. Attempting to install them\x1b[0m");
 
     childProcess.exec("npm install", (err, stdout, stderr) => {
-        if (err || stderr) console.log(`\x1b[1m\x1b[35mError installing dependencies:\nx1b[31m${err || stderr}\x1b[0m`);
-        else
-        {
-            console.log("\x1b[1m\x1b[35mSuccessfully installed required dependencies\x1b[0m");
-            start();
-        }
+        if (err || stderr) return console.log(`\x1b[1m\x1b[35mError installing dependencies:\nx1b[31m${err || stderr}\x1b[0m`);
+
+        console.log("\x1b[1m\x1b[35mSuccessfully installed required dependencies\x1b[0m");
+        start();
     });
 }

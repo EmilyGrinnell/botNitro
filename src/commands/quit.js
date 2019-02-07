@@ -1,6 +1,5 @@
 module.exports = function(message, args) {
-    process.send("QUIT");
-    this.client.destroy().then(() => process.exit(200));
+    this.client.destroy().then(() => process.send("QUIT"));
 };
 
 module.exports.ownerOnly = true;
