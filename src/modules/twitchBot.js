@@ -85,7 +85,7 @@ class twitchBot
             });
         }
 
-        setTimeout(() => {this.checkLiveChannels()}, 60000);
+        setTimeout(() => this.checkLiveChannels(), 60000);
         //Check live channels again after 1 minute
     }
 
