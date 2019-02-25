@@ -50,8 +50,7 @@ class botNitro extends Discord.Client
 
     ignoreDeletion(message)
     {
-        this.ignoredMessages.push(message.id);
-        let index = this.scheduler.findIndex(item => item.func.toString() == `function () {this.deleteMessage("${message.channel.id}", "${message.id}")}`);
+        let index = this.scheduler.findIndex(item => item.func.toString() == `function() {this.deleteMessage("${message.channel.id}", "${message.id}")}`);
         
         if (index != -1) this.scheduler.removeEvent(index);
         //Remove the deletion event for a message
