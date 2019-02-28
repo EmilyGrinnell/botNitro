@@ -14,8 +14,11 @@ module.exports = function(message, args) {
         let user = this.users.get("${message.author.id}");
         if (user) user.send("${args.join(" ")}").catch(() => null);
     }; x`), "this.client");
-    message.channel.send("Reminder set!").catch(() => null);
     //Add event
+
+    let date = new Date(Date.now() + time * 1000);
+    message.channel.send(`Reminder set for \`${this.lib.timestamp(new Date(date.getTime() + date.getTimezoneOffset() * 60000))} UTC\``).catch(() => null);
+    //Send message with a timestamp of when the reminder will be sent
 };
 
 module.exports.desc = ["<xh ym zs> <message>", "Set a reminder to be sent a given message after a given amount of time"];
