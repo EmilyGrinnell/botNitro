@@ -4,7 +4,12 @@
         "ownerId": "[ID OF BOT OWNER]",
         "prefix": "n!",
         "token": "[TOKEN OF DISCORD BOT]",
-        "twitchClientId": "[TWITCH CLIENT ID]"
+        "twitch" : {
+            "accessToken" : "[TWITCH ACCESS TOKEN]",
+            "refreshToken" : "[TWITCH REFRESH TOKEN]",
+            "clientID" : "[TWITCH CLIENT ID]",
+            "clientSecret" : "[TWITCH CLIENT SECRET]"
+        }
     },
     "_default": {
         "actions": {

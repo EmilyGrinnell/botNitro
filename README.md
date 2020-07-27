@@ -18,7 +18,11 @@
     + ownerId - The ID of the owner of the bot - user will have access to all commands in any server
     + prefix - The global prefix that will work in every server
     + token - The token of the Discord bot, can be generated [here](https://discordapp.com/developers/applications/)
-    + twitchClientId - The client ID of a Twitch application, used to make requests to Twitch. Notifications will not work without it. Can be generated [here](https://glass.twitch.tv/console/apps)
+    + twitch - Credentials for a Twitch application. Twitch notifications will not work without these. Can be generated [here](https://dev.twitch.tv/console/apps)
+        + accessToken
+        + refreshToken
+        + clientID
+        + clientSecret
 
 + Server-specific config
     + actions - Used to save join and leave actions - recommended to only be changed using the actions command
