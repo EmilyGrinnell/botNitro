@@ -28,10 +28,14 @@ class twitchBot
                 json : true,
             }, (err, res, body) => {
                 if (res.statusCode == 200) return resolve(body);
-                else if (noRefresh) return reject(err || body);
+                else if (noRefresh || res.statusCode != 401) return reject(err || body);
                 else {
-                    this.makeRequest(path, query, method, true)
-                        .then(resolve)
+                    this.refreshAccessToken()
+                        .then(() => {
+                            this.makeRequest(path, query, method, true)
+                                .then(resolve)
+                                .catch(reject);
+                        })
                         .catch(reject);
                 }
             });
