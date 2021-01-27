@@ -41,14 +41,3 @@ module.exports = function(message) {
     if (config.deleteCommandTimer > -1) this.scheduler.addEvent(Date.now() + config.deleteCommandTimer * 1000, eval(`(function() {this.deleteMessage("${message.channel.id}", "${message.id}")})`), "this.client");
     //Auto delete commands if enabled
 };
-
-
-
-
-
-
-//
-//override textchannel.prototype.send
-//ignore self msgs in message event
-//fire custom event in textchannel.prototype.send
-//
