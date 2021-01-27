@@ -50,9 +50,9 @@ class List
         this.lastEmbed = await this.channel.send("", {embed : {
             color : this.channel.guild.me.displayColor,
             fields : [...this.pages[page], {name : `Page ${page + 1}/${this.pages.length}`, value : "Type `prev`, `next`, or `page <page number>` to view another page, or `done` to stop viewing this list"}]
-        }}).catch(() => null);
+        }}, true).catch(() => null);
 
-        if (this.lastEmbed) this.client.ignoreDeletion(this.lastEmbed);
+        //if (this.lastEmbed) this.client.ignoreDeletion(this.lastEmbed);
         //Delete any previous embed and send a new one
     }
 

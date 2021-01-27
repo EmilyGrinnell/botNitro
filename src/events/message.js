@@ -2,25 +2,18 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = function(message) {
-    if (message.channel.type == "dm" || (message.author.id != this.user.id && message.author.bot)) return;
-    //Ignore DMs and messages from bots
+    if (message.channel.type == "dm" || message.author.id == this.user.id || message.author.bot) return;
+    //Ignore DMs, our own messages, and messages from bots
 
     let config = this.handlers[message.guild.id].config;
     let commandChannels = config.commandChannels.filter(item => this.channels.has(item));
     //Use guild's config or default config if none is defined, and filter command channels to only channels that exist
-
-    if (message.author.id == this.user.id && config.deleteMessageTimer > -1 && !this.ignoredMessages.includes(message.id)) this.scheduler.addEvent(Date.now() + config.deleteMessageTimer * 1000, eval(`(function() {this.deleteMessage("${message.channel.id}", "${message.id}")})`), "this.client");
-    if (this.ignoredMessages.includes(message.id)) this.ignoredMessages.splice(this.ignoredMessages.indexOf(message.id), 1);
-    //Auto delete our own messages if enabled
 
     if (commandChannels.length && !commandChannels.includes(message.channel.id)) return;
     //Ignore commands sent in non-command channels if any are defined
 
     if (!message.content.startsWith(this.config._main.prefix) && !message.content.startsWith(config.prefix)) return;
     //Ignore messages that don't start with the guild's prefix or the global prefix
-
-    if (message.author.id == this.user.id) return;
-    //Ignore our own messages
 
     let prefix = message.content.startsWith(this.config._main.prefix) ? this.config._main.prefix : config.prefix;
     if (message.content.startsWith(this.config._main.prefix) && message.content.startsWith(config.prefix)) prefix = this.config._main.prefix.length > config.prefix.length ? this.config._main.prefix : config.prefix;
@@ -48,3 +41,14 @@ module.exports = function(message) {
     if (config.deleteCommandTimer > -1) this.scheduler.addEvent(Date.now() + config.deleteCommandTimer * 1000, eval(`(function() {this.deleteMessage("${message.channel.id}", "${message.id}")})`), "this.client");
     //Auto delete commands if enabled
 };
+
+
+
+
+
+
+//
+//override textchannel.prototype.send
+//ignore self msgs in message event
+//fire custom event in textchannel.prototype.send
+//

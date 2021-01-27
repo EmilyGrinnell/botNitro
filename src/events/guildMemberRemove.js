@@ -6,8 +6,8 @@ module.exports = function(member) {
         channel.send(this.config[member.guild.id].leaveMessage
             .replace(/{user}/g, member.user.toString())
             .replace(/{guild}/g, member.guild.name)
-        )
-        .then(msg => this.ignoreDeletion(msg))
+        , {}, true)
+        //.then(msg => this.ignoreDeletion(msg))
         .catch(() => null);
     }
     //Send leave message if one is defined

@@ -2,6 +2,19 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
+Discord.TextChannel.prototype.oldSend = Discord.TextChannel.prototype.send;
+Discord.TextChannel.prototype.send = function(content, options, disableAutoDelete) {
+    return new Promise((resolve, reject) => {
+        this.oldSend(content, options)
+            .then(msg => {
+                this.client.emit("self_message", msg, disableAutoDelete);
+                
+                resolve(msg);
+            })
+            .catch(reject);
+    });
+};
+
 class botNitro extends Discord.Client
 {
     constructor()
@@ -14,7 +27,8 @@ class botNitro extends Discord.Client
         this.liveChannels = fs.existsSync(path.resolve(__dirname, "../config/channels.json")) ? require("../config/channels.json") : {};
         this.statuses = fs.existsSync(path.resolve(__dirname, "../config/statuses.json")) ? require("../config/statuses.json") : [];
         this.handlers = {};
-        this.ignoredMessages = [];
+        //this.ignoredMessages = [];
+        //dont think this is ever used?
 
         this.oldEmit = this.emit;
         this.emit = function(event, ...args) {
@@ -48,6 +62,7 @@ class botNitro extends Discord.Client
         if (message) message.delete().catch(() => null);
     }
 
+    /*
     ignoreDeletion(message)
     {
         let index = this.scheduler.findIndex(item => item.func.toString() == `function() {this.deleteMessage("${message.channel.id}", "${message.id}")}`);
@@ -55,6 +70,7 @@ class botNitro extends Discord.Client
         if (index != -1) this.scheduler.removeEvent(index);
         //Remove the deletion event for a message
     }
+    */
 
     saveConfig()
     {

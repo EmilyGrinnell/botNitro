@@ -132,8 +132,8 @@ class twitchBot
                             timestamp : data.started_at,
                             title : data.title,
                             url
-                        }})
-                        .then(msg => this.client.ignoreDeletion(msg))
+                        }}, true)
+                        //.then(msg => this.client.ignoreDeletion(msg))
                         .catch(() => null);
                         //Send notification as a rich embed
                     }
